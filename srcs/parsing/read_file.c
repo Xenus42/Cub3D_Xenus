@@ -3,93 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hadia <Hadia@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 09:46:24 by hadia             #+#    #+#             */
-/*   Updated: 2025/12/10 19:27:50 by hadia            ###   ########.fr       */
+/*   Updated: 2026/03/14 01:43:09 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/*fonction chargée de lire un fichier et de traiter chaque ligne */
-int read_file(char *file_path, t_file_data *data)
+/**
+ * Reads and parses the .cub file line by line.
+ * Opens the file, processes each line, and converts the map to a 2D array.
+ * @param file_path Path to the .cub file.
+ * @param data Pointer to the file data structure to fill.
+ * @return 0 on success, -1 on error.
+ */
+int	read_file(char *file_path, t_file_data *data)
 {
-    int		fd;
-    char	*line;
+	int	fd;
 
-    fd = open(file_path, O_RDONLY);
-    if (fd < 0)
-    {
-        printf("Error\nCould not open file\n");
-        return (-1);
-    }
-    line = get_next_line(fd);
-    while (line)
-    {
-        // Enlever le \n de fin si présent
-        size_t len = ft_strlen(line);
-        if (len > 0 && line[len - 1] == '\n')
-            line[len - 1] = '\0';
-        if (process_line(line, data) == -1)
-        {
-            free(line);
-            close(fd);
-            return (-1);
-        }
-        free(line);
-        line = get_next_line(fd);
-    }
-    close(fd);
-    if (lstmap_to_charmap(data) == -1)
-        return -1;
-    return (0);
+	fd = open(file_path, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error\nCould not open file\n");
+		return (-1);
+	}
+	if (process_file_lines(fd, data) == -1)
+	{
+		close(fd);
+		get_next_line(-1);
+		return (-1);
+	}
+	close(fd);
+	get_next_line(-1);
+	if (lstmap_to_charmap(data) == -1)
+		return (-1);
+	return (0);
 }
 
-
-
-/*fonction chargée de traiter chaque ligne lue */
-int process_line(char *line, t_file_data *data)
+/**
+ * Processes a single line from the file.
+ * Trims the line, checks for emptiness,
+ * and attempts to parse textures or colors, or processes as map line.
+ * @param line The line to process.
+ * @param data Pointer to the file data structure.
+ * @return 0 on success, -1 on error.
+ */
+int	process_line(char *line, t_file_data *data)
 {
-    int ret;
-    char *trimmed;
+	char	*trimmed;
+	int		ret;
 
-    if (!line || *line == '\0' || *line == '\n')
-        return 0;
-    trimmed = ft_strtrim(line, " \t");
-    if (!trimmed || *trimmed == '\0')
-    {
-        free(trimmed);
-        return 0;
-    }
-    ret = process_textures(trimmed, data);
-    if (ret != 1)
-    {
-        if (data->has_map_started)
-        {
-            printf("Error\nMap must be at the end of the file\n");
-            free(trimmed);
-            return -1;
-        }
-        free(trimmed);
-        return ret;
-    }
-    ret = process_colors(trimmed, data);
-    if (ret != 1)
-    {
-        if (data->has_map_started)
-        {
-            printf("Error\nMap must be at the end of the file\n");
-            free(trimmed);
-            return -1;
-        }
-        free(trimmed);
-        return ret;
-    }
-    // Sinon, map
-    ret = process_map(trimmed, data);
-    free(trimmed);
-    if (ret == 0)
-        data->has_map_started = 1;
-    return ret;
+	if (!line)
+		return (0);
+	trimmed = ft_strtrim(line, " \t");
+	ret = handle_empty_line(trimmed, data);
+	if (ret != 1)
+	{
+		free(trimmed);
+		return (ret);
+	}
+	ret = try_process_line_components(trimmed, line, data);
+	free(trimmed);
+	return (ret);
 }

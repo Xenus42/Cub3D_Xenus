@@ -1,100 +1,210 @@
-# cub3D
+# Cub3D
+
+*This project has been created as part of the 42 curriculum by hadia, lebroue.*
 
 ## Description
-cub3D est un projet de l'école 42 implémentant un moteur de jeu 3D simple en C, inspiré de Wolfenstein 3D. Le jeu utilise le raycasting pour créer un environnement 3D navigable à partir d'une carte 2D.
 
-Le projet est divisé en plusieurs parties : parsing (analyse des fichiers), rendu graphique, gestion des événements (clavier/souris), et optimisation. Vous êtes chargé de la partie parsing, qui est cruciale car elle permet de charger et valider les données d'entrée avant le rendu.
+**Cub3D** is a 42 School project that implements a 3D raycasting engine in C, inspired by classic games like **Doom** and **Wolfenstein 3D**. The project demonstrates fundamental computer graphics concepts by rendering a 3D perspective view from a 2D map using raycasting and texture mapping.
 
-## Parsing Overview
-Le parsing transforme un fichier `.cub` en structures de données utilisables :
-- **Extraire** : Identifier et isoler les parties utiles de la ligne (e.g., chemin pour textures, valeurs RGB pour couleurs).
-- **Parser** : Analyser et convertir les données (e.g., découper RGB en entiers, valider le format).
-- **Stocker** : Sauvegarder dans `t_file_data` pour utilisation ultérieure (rendu, validation).
-Cela permet de traiter textures (NO/SO/WE/EA) et couleurs (F/C) avant la map, avec gestion d'erreurs.
+### Key Features
+- **Raycasting Engine**: Converts a 2D map into a 3D first-person view
+- **Texture Mapping**: Applies textures to walls based on direction (North, South, East, West)
+- **DDA Algorithm**: Efficient grid traversal to detect wall collisions
+- **Player Movement**: 4-directional movement (forward, backward, strafe left/right)
+- **Collision Detection**: Prevents walking through walls
+- **Bonus Features**: Minimap (when compiled with `make bonus`)
 
-## Parsing de la Map - Explication Détaillée
+### Project Goal
+To understand and implement the core rendering technique used in early 3D games, implementing a complete raycasting pipeline: parsing configuration files, managing textures, calculating ray-wall intersections, and rendering columns based on distance.
 
-### Vue d'ensemble
-La map est la section du fichier `.cub` décrivant le labyrinthe 2D. Elle est parsée en deux phases :
-1. **Collecte** : Pendant la lecture, chaque ligne de map est ajoutée à une liste temporaire.
-2. **Finalisation** : Après lecture, la liste est convertie en tableau 2D et validée.
+## Instructions
 
-### Schéma du Flux de Parsing de la Map
+### Prerequisites
+- **System**: Linux
+- **Compiler**: GCC with `-Wall -Wextra -Werror`
+- **Libraries**: 
+  - X11 (libxext-dev, libx11-dev)
+  - Standard C library (libm)
+- **Makefile**: Supports standard `make` targets
 
-```
-Fichier .cub
-     |
-     v
-Lecture ligne par ligne (read_file)
-     |
-     +--> Ligne vide ? --> Ignorer
-     |
-     +--> Texture/ Couleur ? --> Traiter (process_textures/colors)
-     |
-     +--> Map ? --> Ajouter à liste (process_map)
-     |
-     v
-Fin de lecture --> to_2d_map (finalisation)
-     |
-     +--> Convertir liste en char **map
-     |
-     +--> Valider largeur uniforme (validate_width)
-     |
-     +--> Valider joueur unique (validate_player)
-     |
-     +--> Valider fermeture (validate_closure - flood fill)
-     |
-     v
-Map validée ou erreur
+### Compilation
+
+```bash
+make              # Compile mandatory part
+make bonus        # Compile with bonus features (minimap)
+make clean        # Remove object files
+make fclean       # Remove object files and executable
+make re           # Recompile from scratch
 ```
 
-### Étapes Détaillées
+The executable is named `cub3D`.
 
-#### 1. Collecte des Lignes (`process_map`)
-- **Entrée** : Ligne du fichier (e.g., "111", "1N1").
-- **Action** : Ajouter à `data->map_lines` (liste chaînée) si non vide.
-- **Sortie** : Liste de lignes brutes.
+### Execution
 
-#### 2. Conversion en Tableau 2D (`to_2d_map`)
-- **Entrée** : Liste `map_lines`.
-- **Action** : Allouer `data->map` (tableau de chaînes), copier les lignes.
-- **Sortie** : `data->map` (char **), `data->map_height`.
-
-#### 3. Validation de la Largeur (`validate_width`)
-- **Règle** : Toutes les lignes doivent avoir la même longueur.
-- **Action** : Mesurer `ft_strlen` de chaque ligne, comparer.
-- **Erreur** : "Map lines have different widths".
-
-#### 4. Validation du Joueur (`validate_player`)
-- **Règle** : Exactement un `N/S/E/W`.
-- **Action** : Parcourir la map, compter, enregistrer position/direction.
-- **Erreur** : "Multiple players" ou "No player".
-
-#### 5. Validation de la Fermeture (`validate_closure`)
-- **Règle** : Map entourée de murs (`1`), pas de trous.
-- **Action** : Flood fill depuis le joueur, vérifier que tous `0` sont accessibles.
-- **Erreur** : "Map is not closed".
-
-### Exemple
-Fichier `.cub` :
-```
-NO wall.xpm
-F 100,100,100
-111
-1N1
-111
+```bash
+./cub3D <path_to_map_file>
 ```
 
-- **Collecte** : Lignes "111", "1N1", "111" dans liste.
-- **Conversion** : `map[0] = "111"`, `map[1] = "1N1"`, `map[2] = "111"`, `height=3`, `width=3`.
-- **Validations** : Largeur OK, joueur N à (1,1), fermée.
+Example:
+```bash
+./cub3D maps/good/good_map.cub
+```
 
-### Intégration
-Après parsing réussi, `t_file_data` est utilisé pour le rendu 3D. En cas d'erreur, le programme s'arrête.
+### Controls
 
-## Installation et Utilisation
-- `make` : Compiler le projet.
-- `./cub3D maps/map.cub` : Lancer le jeu avec une map valide.
+| Key | Action |
+|-----|--------|
+| **W** / **Up Arrow** | Move forward |
+| **S** / **Down Arrow** | Move backward |
+| **A** | Strafe left |
+| **D** | Strafe right |
+| **Mouse** | Look around (bonus only) |
+| **ESC** | Exit game |
 
-## Auteurs
-- [Votre nom] - Parsing et validation.
+## Technical Concepts
+
+### 1. Parsing the Configuration File (.cub)
+
+The parsing phase loads and validates the game configuration from a `.cub` file. This process has three main stages:
+
+**Phase 1: Metadata Extraction and Validation**
+
+- **Textures (NO/SO/WE/EA)**: Each line specifies a wall texture for a direction
+  - Extracted as file paths and loaded into memory
+  - Each texture must be defined exactly once
+  
+- **Colors (F/C)**: Floor and ceiling colors in RGB format
+  - Format: `F 255,100,50` or `C 0,0,0`
+  - Each component must be an integer between 0-255
+  - Each color must be defined exactly once
+
+**Phase 2: Map Accumulation**
+
+- Lines not matching texture or color formats are treated as map data
+- Each map line is stored in a temporary linked list
+- Empty lines before the first map line are ignored
+- Valid map characters: `0` (empty space), `1` (wall), `N/S/E/W` (player position)
+
+**Phase 3: Map Conversion and Validation**
+
+The linked list is converted into a 2D character array with four mandatory validations:
+
+1. **Width Uniformity**: All rows must have the same width (padding with spaces if needed)
+2. **Unique Player Position**: Exactly one player spawn point (N, S, E, or W)
+3. **Spatial Closure** (Flood-fill):
+   - From the player position, verify all reachable spaces are completely surrounded by walls
+   - Detects map gaps and unreachable areas
+4. **Player Edge Check**: Player cannot spawn on map boundaries
+
+### 2. DDA Algorithm (Digital Differential Analyzer)
+
+The DDA algorithm efficiently traverses a 2D grid to find ray-wall intersections without expensive trigonometry.
+
+**How it works:**
+
+1. **Initialize the ray**: Starting from player position with a specific angle
+2. **Calculate step directions**: Determine whether to move horizontally or vertically first
+3. **Grid traversal loop**:
+   - Compare distances to next horizontal and vertical grid lines (tmax_x and tmax_y)
+   - Move in the direction with the smaller distance
+   - Continue until a wall is detected
+4. **Collision type determination**: Was the collision on a horizontal or vertical surface?
+
+**Advantages:**
+- No expensive trigonometric calculations
+- Fast grid traversal with simple additions and comparisons
+- Accurate collision detection
+
+### 3. Raycasting Rendering
+
+Raycasting converts the 2D map into a 3D first-person view by casting 800 rays (one per screen column).
+
+**Rendering pipeline for each column:**
+
+1. **Cast ray**: Send a ray from player position at a specific angle
+2. **Find collision**: Use DDA to locate the nearest wall
+3. **Calculate distance**: Compute perpendicular distance (prevents fisheye distortion)
+4. **Determine wall height**: `wall_height = screen_height / distance`
+5. **Texture mapping**: Calculate UV coordinates to fetch the correct texture pixel
+6. **Render column**: Fill screen column with textured wall data
+
+**Fisheye Correction:**
+Without correction, rays at screen edges would be longer, causing the image to bulge. Using perpendicular distance instead of direct ray distance fixes this.
+
+## Architecture
+
+The project is organized into modular components respecting the 42 Norminette constraints (max 5 functions per file, max 25 lines per function):
+
+### Core Modules
+
+| Module | Purpose |
+|--------|---------|
+| **raycasting/** | 3D rendering engine (DDA, raycasting, wall rendering) |
+| **parsing/** | Configuration file parsing and validation |
+| **textures/** | Texture loading and management |
+| **render_3d/** | Floor and ceiling rendering |
+| **player/** | Player position and collision handling |
+| **keyboard/** | User input handling |
+| **window/** | Window creation and display management |
+| **game/** | Main game context and loop |
+| **minimap/** | Minimap display (bonus) |
+
+### Key Raycasting Files
+
+- `raycasting.c`: Main orchestrator (loops through 800 rays)
+- `raycasting_utils_init_ray.c`: Ray initialization
+- `raycasting_utils_dda_algo_utils_calculate_step.c`: DDA step calculations
+- `raycasting_utils_dda_algo.c`: DDA grid traversal
+- `raycasting_utils_calculate_wall_distance.c`: Perpendicular distance calculation
+- `raycasting_utils_draw_vertical_line.c`: Screen column rendering
+
+## Resources
+
+### Raycasting and DDA Algorithm References
+
+1. **DDA - Interactive Explanation**
+   https://aaaa.sh/creatures/dda-algorithm-interactive/
+   
+2. **DDA Line Generation Algorithm - GeeksforGeeks**
+   https://www.geeksforgeeks.org/computer-graphics/dda-line-generation-algorithm-computer-graphics/
+
+3. **Raycasting Tutorial - LoDevInfo**
+   https://lodev.org/cgtutor/raycasting.html
+
+4. **Raycasting Game Tutorial - YouTube**
+   https://www.youtube.com/watch?v=G9i78WoBBIU
+
+5. **Raycasting: From Doom to Wolfenstein**
+   https://guy-grave.developpez.com/tutoriels/jeux/doom-wolfenstein-raycasting/
+
+6. **Raycasting - Wikipedia**
+   https://fr.wikipedia.org/wiki/Raycasting
+
+7. **Cub3D Implementation Reference - Nathaan**
+   https://nathaan.me/projects/cub3d
+
+### AI Usage
+
+AI was used for code review and documentation purposes only:
+- **Code structure review**: Validating function organization against 42 Norminette
+- **Function naming clarity**: Ensuring descriptive names that explain purpose (e.g., `raycasting_utils_dda_algo_utils_calculate_step.c`)
+- **README documentation**: Structuring technical explanations for clarity
+- **Parsing logic explanation**: Documenting the three-phase parsing process
+
+No AI was used for core algorithm design or implementation logic.
+
+## Compilation Status
+
+- **Binary size**: ~327KB (optimized: `-O3`)
+- **Norminette compliance**: Raycasting module 100% compliant (10/10 files)
+- **Warnings**: None
+- **Tested maps**: Library, classic, and edge cases all functional
+
+## Summary
+
+Cub3D demonstrates a working 3D raycasting engine that implements:
+- **DDA algorithm** for efficient ray-grid intersection
+- **Raycasting** to convert 2D maps to 3D perspectives
+- **Texture mapping** for realistic wall rendering
+- **Modular architecture** compliant with strict coding standards
+

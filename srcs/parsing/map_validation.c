@@ -1,0 +1,162 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_validation.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 11:00:00 by hadia             #+#    #+#             */
+/*   Updated: 2026/03/14 14:55:58 by lebroue          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/cub3d.h"
+
+/**
+ * Validates that all characterfree the map are valid.
+ * Allowed characters: 0, 1, N, S, E, W.
+ * @param data Pointer to the file data structure.
+ * @return 0 if valid, -1 otherwise.
+ */
+int	validate_characters(t_file_data *data)
+{
+	int		y;
+	int		len;
+	int		x;
+	char	c;
+
+	y = 0;
+	while (y < data->map_height)
+	{
+		len = ft_strlen(data->map[y]);
+		x = 0;
+		while (x < len)
+		{
+			c = data->map[y][x];
+			if (c != '0' && c != '1' && c != 'N' && c != 'S' && c != 'E'
+				&& c != 'W')
+			{
+				printf("Error\nInvalid character in map: '%c' "
+					"(ASCII: %d) at y=%d x=%d\n", c, (int)c, y, x);
+				return (-1);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+/**
+ * Processes a single character for player validation.
+ * Increments count if player char found, sets position and direction.
+ * @param c The character to check.
+ * @param count Pointer to player count.
+ * @param x X position.
+ * @param y Y position.
+ * @param data Pointer to the file data structure.
+ * @return 0 on success, -1 on error.
+ */
+static int	player_char(char c, int *count, t_file_data *data)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+	{
+		if (*count > 0)
+		{
+			printf("Error\nMultiple players in map\n");
+			return (-1);
+		}
+		(*count)++;
+		data->player_pos_x = data->p[0];
+		data->player_pos_y = data->p[1];
+		data->player_dir = c;
+		data->map[data->p[1]][data->p[0]] = '0';
+	}
+	return (0);
+}
+
+/**
+ * Validates that there is exactly one player in the map.
+ * Sets player position and direction, replaces player char with '0'.
+ * @param data Pointer to the file data structure.
+ * @return 0 if valid, -1 otherwise.
+ */
+int	validate_player(t_file_data *data)
+{
+	int	c;
+	int	len;
+
+	c = 0;
+	data->p[1] = 0;
+	while (data->p[1] < data->map_height)
+	{
+		len = ft_strlen(data->map[data->p[1]]);
+		data->p[0] = 0;
+		while (data->p[0] < len)
+		{
+			if (player_char(data->map[data->p[1]][data->p[0]], &c, data) == -1)
+				return (-1);
+			data->p[0] += 1;
+		}
+		data->p[1] += 1;
+	}
+	if (c == 0)
+	{
+		printf("Error\nNo player in map\n");
+		return (-1);
+	}
+	return (0);
+}
+
+/**
+ * Validates that the map borders are properly walled.
+ * Calls validation for top/bottom and left/right borders.
+ * @param data Pointer to the file data structure.
+ * @return 0 if valid, -1 otherwise.
+ */
+int	validate_borders_only(t_file_data *data)
+{
+	int	y;
+
+	if (validate_top_bottom(data) == -1)
+		return (-1);
+	y = 0;
+	while (y < data->map_height)
+	{
+		if (data->map[y][0] != '1')
+		{
+			printf("Error\nMap left border must be walls\n");
+			return (-1);
+		}
+		if (data->map[y][data->map_width - 1] != '1')
+		{
+			printf("Error\nMap right border must be walls\n");
+			return (-1);
+		}
+		y++;
+	}
+	return (0);
+}
+
+/**
+ * Validates that the top and bottom borders of the map are walls.
+ * @param data Pointer to the file data structure.
+ * @return 0 if valid, -1 otherwise.
+ */
+int	validate_top_bottom(t_file_data *data)
+{
+	int	x;
+
+	x = 0;
+	while (x < data->map_width)
+	{
+		if (data->map[0][x] != '1' ||
+			data->map[data->map_height - 1][x] != '1')
+		{
+			printf("Error\nMap border must be walls\n");
+			return (-1);
+		}
+		x++;
+	}
+	return (0);
+}
