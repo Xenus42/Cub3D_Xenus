@@ -13,7 +13,7 @@
 #ifndef PARSING_H
 
 # define PARSING_H
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
 typedef struct s_list	t_list;
 typedef struct s_game	t_game;
 

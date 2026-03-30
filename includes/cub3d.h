@@ -24,7 +24,7 @@
 # include "../minilibx-linux/mlx.h"
 
 
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
 
 
 # include "../includes/game.h"

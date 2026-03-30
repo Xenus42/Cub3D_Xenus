@@ -13,7 +13,7 @@
 #ifndef TEXTURES_H
 
 # define TEXTURES_H
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
 # include "parsing.h"
 
 typedef struct s_file_data	t_file_data;

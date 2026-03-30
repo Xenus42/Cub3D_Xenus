@@ -31,8 +31,7 @@ int	check_map_line_valid(t_file_data *data, char *line)
 		{
 			if (data->map_width > 34)
 				printf("Error\nMap lines too long\n");
-			else
-				printf("Error\nMap lines too short\n");
+			else printf("Error\nMap lines too short\n");
 			return (-1);
 		}
 	}
@@ -68,7 +67,7 @@ char	**allocate_and_fill_temp_map(t_file_data *data, int height)
 	i = 0;
 	while (i < height)
 	{
-		temp_map[i] = ft_strdup((char *)tmp->content);
+		temp_map[i] = ft_strdup((char *)tmp->container);
 		if (!temp_map[i])
 		{
 			while (++i < height)
