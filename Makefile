@@ -14,7 +14,6 @@ SRCS = srcs/main.c \
 	srcs/parsing/map_validation.c \
 	srcs/textures/charge_textures.c \
 	srcs/textures/free_textures.c \
-	srcs/textures/sync_textures.c \
 	srcs/textures/texture_loader.c \
 	srcs/textures/texture_ptrs.c \
 	srcs/keyboard/handle_key.c \

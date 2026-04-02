@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 15:48:20 by lebroue           #+#    #+#             */
-/*   Updated: 2026/02/25 17:10:18 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:05:25 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ static void	load_all_textures(t_game *game, t_file_data *data)
 void	load_textures(t_game *game, t_file_data *file_data)
 {
 	load_all_textures(game, file_data);
-	sync_all_texture_fields(game);
 	printf("All textures loaded\n");
 }

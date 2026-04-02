@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 21:02:51 by hadia             #+#    #+#             */
-/*   Updated: 2026/02/26 21:04:10 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:50:30 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,11 @@ typedef struct s_textures
 	int						global_width;
 	int						global_height;
 
-	// Individual wall textures (consolidated using t_wall_texture)
+	// Individual wall textures
 	t_wall_texture			north;
 	t_wall_texture			south;
 	t_wall_texture			east;
 	t_wall_texture			west;
-
-	// Legacy fields for backward compatibility during refactoring
-	void					*north_img;
-	void					*south_img;
-	void					*west_img;
-	void					*east_img;
-	char					*north_data;
-	char					*south_data;
-	char					*west_data;
-	char					*east_data;
-	int						north_bpp;
-	int						north_width;
-	int						north_height;
-	int						north_line_len;
-	int						north_endian;
-	int						south_bpp;
-	int						south_line_len;
-	int						south_height;
-	int						south_width;
-	int						south_endian;
-	int						west_bpp;
-	int						west_height;
-	int						west_width;
-	int						west_line_len;
-	int						west_endian;
-	int						east_bpp;
-	int						east_line_len;
-	int						east_height;
-	int						east_width;
-	int						east_endian;
 }							t_textures;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,12 +66,8 @@ typedef struct s_textures
 ///////////////////////////////////////////////////////////////////////////////
 
 /*LOAD TEXTURE:
-Load all textures from file_data and sync them with t_wall_texture structures*/
+Load all textures from file_data*/
 void						load_textures(t_game *game, t_file_data *data);
-
-/*SYNC ALL TEXTURE FIELDS:
-Synchronize legacy fields with new t_wall_texture structures*/
-void						sync_all_texture_fields(t_game *game);
 
 /*LOAD TEXTURE BY FACE:
 LOAD A SINGLE TEXTURE FILE (.xpm) FOR A SPECIFIC WALL FACE (N/S/E/W)*/
