@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <stdint.h>
 
 static int	handle_floor_ceilling_error(t_file_data *data)
 {
@@ -39,7 +40,7 @@ int	parsing_args(t_file_data *data, char **argv)
 
 	filename = argv[1];
 	len = ft_strlen(filename);
-	if (len < 4 || ft_strcmp(filename + len - 4, ".cub") != 0)
+	if (len < 4 || ft_strncmp(filename + len - 4, ".cub", SIZE_MAX) != 0)
 	{
 		printf("Error\nFile must have .cub extension\n");
 		return (-1);
@@ -70,8 +71,8 @@ void	free_file_data(t_file_data *data)
 	free(data->east_texture);
 	if (data->map)
 	{
-		while (i++ < data->map_height)
-			free(data->map[i]);
+		while (i < data->map_height)
+			free(data->map[i++]);
 		free(data->map);
 	}
 	if (data->map_lines)
@@ -90,4 +91,6 @@ void	free_game(t_game *game)
 		mlx_destroy_window(game->mlx_ptr, game->mlx_window_ptr);
 	if (game->mlx_ptr)
 		mlx_destroy_display(game->mlx_ptr);
+	if (game->mlx_ptr)
+		free(game->mlx_ptr);
 }

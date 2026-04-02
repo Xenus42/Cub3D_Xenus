@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <stdint.h>
 #include <unistd.h>
 
 /**
@@ -58,7 +59,7 @@ int	extract_texture(char *path, char **texture)
 	if (*path == '\0')
 		return (-1);
 	len = ft_strlen(path);
-	if (len < 4 || ft_strcmp(path + len - 4, ".xpm") != 0)
+	if (len < 4 || ft_strncmp(path + len - 4, ".xpm", SIZE_MAX) != 0)
 	{
 		printf("Error\nTexture file must have .xpm extension\n");
 		return (-1);

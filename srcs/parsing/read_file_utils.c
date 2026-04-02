@@ -24,7 +24,7 @@ int	process_file_lines(int fd, t_file_data *data)
 	char	*line;
 	size_t	len;
 
-	line = get_next_line(fd);
+	line = get_next_line(fd, READ);
 	while (line)
 	{
 		len = ft_strlen(line);
@@ -36,8 +36,9 @@ int	process_file_lines(int fd, t_file_data *data)
 			return (-1);
 		}
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, READ);
 	}
+	get_next_line(fd, DELETE);
 	return (0);
 }
 

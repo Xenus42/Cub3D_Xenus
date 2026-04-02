@@ -3,8 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parse_colors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */ /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 12:18:02 by hadia             #+#    #+#             */
 /*   Updated: 2026/03/14 01:13:52 by lebroue          ###   ########.fr       */
 /*                                                                            */
@@ -57,12 +56,12 @@ static int	extract_rgb_value(char *str, int start, int end, int *color_value)
 	int		length;
 
 	length = end - start;
-	if (length > 3 || length == 0)
+	if (length > 3 || length <= 0)
 		return (-1);
 	num_str = ft_substr(str, start, length);
 	if (!num_str)
 		return (-1);
-	*color_value = ft_atoi(num_str);
+	*color_value = ft_strtol(num_str, NULL, 10);
 	free(num_str);
 	if (*color_value < 0 || *color_value > 255)
 		return (-1);
@@ -108,7 +107,8 @@ static int	parse_rgb_values(char *str, int color[3], int *nb_coma, int start)
 		}
 		if (counter(str, i, nb_coma, &coma))
 			return (-1);
-		++i;
+		if (str[i])
+			++i;
 	}
 	return (0);
 }

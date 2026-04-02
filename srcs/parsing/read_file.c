@@ -32,11 +32,11 @@ int	read_file(char *file_path, t_file_data *data)
 	if (process_file_lines(fd, data) == -1)
 	{
 		close(fd);
-		get_next_line(-1);
+		get_next_line(0, DELETE);
 		return (-1);
 	}
 	close(fd);
-	get_next_line(-1);
+	get_next_line(0, DELETE);
 	if (lstmap_to_charmap(data) == -1)
 		return (-1);
 	return (0);

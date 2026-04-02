@@ -1,101 +1,163 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hadia <Hadia@student.42lyon.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/10/24 19:30:04 by hadia             #+#    #+#              #
-#    Updated: 2025/12/10 12:48:09 by hadia            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME := libft.a
 
+MODE := default
 
-NAME = libft.a
+override BUILDDIR := .build/$(MODE)/
 
-CFLAGS = -Wall \
-		 -Werror \
-		 -Wextra \
-		 -g3
-		 
-CC = cc
-ARFLAGS = rcs
-AR = ar
+override FLAGFILE := .build/.compile_flags
 
-FILES = ft_bzero.c \
-		ft_isalnum.c \
-		ft_isalpha.c \
-		ft_isascii.c \
-		ft_isspace.c \
-		ft_isdigit.c \
-		ft_isprint.c \
-		ft_memchr.c \
-		ft_memcmp.c \
-		ft_memcpy.c \
-		ft_memset.c \
-		ft_strchr.c \
-		ft_strlen.c \
-		ft_strrchr.c \
-		ft_tolower.c \
-		ft_toupper.c \
-		ft_atoi.c \
-		ft_calloc.c \
-		ft_realloc.c \
-		ft_strdup.c \
-		ft_strndup.c \
-		ft_memmove.c \
-		ft_putchar_fd.c \
-		ft_putendl_fd.c \
-		ft_putnbr_fd.c \
-		ft_putstr_fd.c \
-		ft_strjoin.c \
-		ft_strlcat.c \
-		ft_strlcpy.c \
-		ft_strncmp.c \
-		ft_strcmp.c \
-		ft_strnstr.c \
-		ft_strtrim.c \
-		ft_substr.c \
-		ft_itoa.c \
-		ft_strmapi.c \
-		ft_striteri.c \
-		ft_split.c \
-		get_next_line.c \
-		get_next_line_utils.c \
+override OBJDIR := $(addprefix $(BUILDDIR), objs/)
 
-BONUS =	ft_lstnew_bonus.c \
-		ft_lstadd_front_bonus.c \
-		ft_lstsize_bonus.c \
-		ft_lstlast_bonus.c \
-		ft_lstadd_back_bonus.c \
-		ft_lstdelone_bonus.c \
-		ft_lstclear_bonus.c \
-		ft_lstiter_bonus.c \
-		ft_lstmap_bonus.c
+override DEPDIR := $(addprefix $(BUILDDIR), deps/)
 
-OBJECTS = $(FILES:.c=.o)
+override SRCDIR := srcs/
 
-BONUS_OBJECTS = $(BONUS:.c=.o)
+BASENAME := get_next_line \
+			get_next_line_utils \
+		   ft_isalpha \
+		   ft_isascii \
+		   ft_isdigit \
+		   ft_isspace \
+		   ft_isprint \
+		   ft_toupper \
+		   ft_tolower \
+		   ft_isalnum \
+		   ft_bzero \
+		   ft_memset \
+		   ft_memcpy \
+		   ft_memmove \
+		   ft_memcmp \
+		   ft_memchr \
+		   ft_strlen \
+		   ft_strchr \
+		   ft_strchrs \
+		   ft_strrchr \
+		   ft_strncmp \
+		   ft_strnstr \
+		   ft_strlcpy \
+		   ft_strlcat \
+		   ft_calloc \
+		   ft_strdup \
+		   ft_strndup \
+		   ft_atoi \
+		   ft_strtoul \
+		   ft_strtol \
+		   ft_strtod \
+		   ft_isupper \
+		   ft_substr \
+		   ft_putchar_fd \
+		   ft_putstr_fd \
+		   ft_putendl_fd \
+		   ft_putnbr_fd \
+		   ft_putdouble_fd \
+		   ft_strmapi \
+		   ft_striteri \
+		   ft_itoa \
+		   ft_strjoin \
+		   ft_strjoinarr \
+		   ft_strtrim \
+		   ft_split \
+		   ft_splits \
+		   ft_lstnew \
+		   ft_lstadd_front \
+		   ft_lstsize \
+		   ft_lstlast \
+		   ft_lstadd_back \
+		   ft_lstdelone \
+		   ft_lstclear \
+		   ft_lstiter \
+		   ft_lstmap \
+		   ft_sqrt \
+		   ft_btriter \
+		   ft_btrleft \
+		   ft_btrright \
+		   ft_lstnext \
+		   ft_strjoinarr \
+		   ft_tablen \
+		   ft_atof
 
-HEADERS = libft.h
+override SRCS := $(addprefix $(SRCDIR), $(addsuffix .c, $(BASENAME)))
 
-.PHONY: all
-all: $(NAME)
+override OBJS := $(addprefix $(OBJDIR), $(addsuffix .o, $(BASENAME)))
 
-$(NAME): $(OBJECTS) $(HEADERS)
-	$(AR) $(ARFLAGS) $@ $(OBJECTS)
+override DEPS := $(addprefix $(DEPDIR), $(addsuffix .d, $(BASENAME)))
 
-.PHONY: clean
+CC := cc
+
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes
+
+ifeq (debug, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -g3
+endif
+
+ifeq (opti, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -Ofast
+endif
+
+ifeq (gprof, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -pg
+endif
+
+ifeq (asan, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -fsanitize=address
+endif
+
+ifeq (lsan, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -fsanitize=leak
+endif
+
+ifeq (msan, $(MODE))
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Wstrict-prototypes -Wunreachable-code -Wstrict-prototypes -fsanitize=memory
+endif
+
+override CPPFLAGS := -I
+
+override INCS := ./includes
+
+override DEPSFLAGS := -MD -MP -MF
+
+override AR := ar
+
+override ARFLAGS := rcs
+
+override RM := rm -rf
+
+override MAKEFLAGS += --no-print-directory
+
+CURRENT_FLAGS := $(MODE)$(CC)$(CFLAGS)$(CPPFLAGS)$(LDFLAGS)$(LDLIBS)
+
+ifneq ($(shell cat $(FLAGFILE) 2>/dev/null), $(CURRENT_FLAGS))
+$(shell mkdir -p $(BUILDDIR) && echo '$(CURRENT_FLAGS)' > $(FLAGFILE))
+endif
+
+all:
+	@$(MAKE) -j$(nproc) MODE="$(MODE)" $(NAME)
+
+$(NAME): $(OBJS) $(FLAGFILE)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	@echo ""
+	@echo "libft.a created."
+
+$(OBJDIR)%.o: $(SRCDIR)%.c | $(OBJDIR) $(DEPDIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(INCS) $(DEPSFLAGS) $(DEPDIR)$*.d -c $< -o $@ $(COMPFLAGS)
+
+$(OBJDIR) $(DEPDIR):
+	mkdir -p $@
+
+$(FLAGFILE): | $(BUILDDIR)
+	@echo '$(CURRENT_FLAGS)' > $@
+
 clean:
-	rm -rf $(OBJECTS) $(BONUS_OBJECTS)
+	$(RM) $(BUILDDIR)
 
-.PHONY: fclean
 fclean: clean
-	rm -rf $(NAME)
+	$(RM) $(NAME) $(SONAME)
 
-.PHONY: re
 re: fclean all
 
-.PHONY: bonus
-bonus: $(HEADERS)
-	$(MAKE) $(NAME) FILES="$(FILES) $(BONUS)"
+norm:
+	@norminette $(SRCS)
+
+-include $(DEPS)
+
+.PHONY: all clean fclean re
