@@ -1,68 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   free_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: kporceil <kporceil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/10 09:47:42 by hadia             #+#    #+#             */
-/*   Updated: 2026/03/14 14:52:49 by lebroue          ###   ########.fr       */
+/*   Created: 2026/04/02 14:52:31 by kporceil          #+#    #+#             */
+/*   Updated: 2026/04/03 16:45:56 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-#include <stdint.h>
-
-static int	handle_floor_ceilling_error(t_file_data *data)
-{
-	if (!data->floor_set)
-	{
-		printf("Error\nFloor color (F) is missing\n");
-		return (-1);
-	}
-	if (!data->ceiling_set)
-	{
-		printf("Error\nCeiling color (C) is missing\n");
-		return (-1);
-	}
-	if (data->map_height == 0)
-	{
-		printf("Error\nMap is missing\n");
-		return (-1);
-	}
-	return (0);
-}
-
-int	parsing_args(t_file_data *data, char **argv)
-{
-	char	*filename;
-	int		len;
-
-	filename = argv[1];
-	len = ft_strlen(filename);
-	if (len < 4 || ft_strncmp(filename + len - 4, ".cub", SIZE_MAX) != 0)
-	{
-		printf("Error\nFile must have .cub extension\n");
-		return (-1);
-	}
-	if (read_file(argv[1], data) == -1)
-		return (-1);
-	if (!data->north_set || !data->south_set || !data->west_set
-		|| !data->east_set)
-	{
-		printf("Error\nAll textures (NO, SO, WE, EA) are required\n");
-		return (-1);
-	}
-	if (handle_floor_ceilling_error(data) == -1)
-		return (-1);
-	return (0);
-}
+#include <stdlib.h>
 
 void	free_file_data(t_file_data *data)
 {
 	int	i;
 
-	i = 0;
 	if (!data)
 		return ;
 	free(data->north_texture);
@@ -71,6 +25,7 @@ void	free_file_data(t_file_data *data)
 	free(data->east_texture);
 	if (data->map)
 	{
+		i = 0;
 		while (i < data->map_height)
 			free(data->map[i++]);
 		free(data->map);

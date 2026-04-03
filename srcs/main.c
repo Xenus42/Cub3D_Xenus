@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 		printf("Usage: %s <map_file>\n", argv[0]);
 		return (1);
 	}
-	if (parsing_args(&data, argv) == -1)
+	if (parse_file(&data, argv[1]) == -1)
 	{
 		printf("error\nparsing failed\n");
 		free_file_data(&data);
