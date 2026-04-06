@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 17:07:27 by hadia             #+#    #+#             */
-/*   Updated: 2026/03/14 01:33:29 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/03 16:51:47 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 # define PARSING_H
 # include "../libft/includes/libft.h"
+
 typedef struct s_list	t_list;
 typedef struct s_game	t_game;
 
@@ -27,20 +28,10 @@ typedef struct s_file_data
 	char				*west_texture;
 	// Path to east wall texture
 	char				*east_texture;
-	// Flag: north texture parsed
-	int					north_set;
-	// Flag: south texture parsed
-	int					south_set;
-	// Flag: west texture parsed
-	int					west_set;
-	// Flag: east texture parsed
-	int					east_set;
 	// Floor color RGB components [R, G, B]
 	int					floor_color[3];
 	// Ceiling color RGB components [R, G, B]
 	int					ceiling_color[3];
-	// Container for [x, y];
-	int					p[2];
 	// Flag: floor color parsed
 	int					floor_set;
 	// Flag: ceiling color parsed
@@ -63,98 +54,14 @@ typedef struct s_file_data
 	t_list				*map_lines;
 }						t_file_data;
 
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////FILE PARSING/////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-/*PARSING ARGS: PARSE COMMAND LINE ARGUMENTS AND VALIDATE FILE EXTENSION*/
-int						parsing_args(t_file_data *data, char **argv);
-
-/*READ FILE: READ AND PROCESS CONFIGURATION FILE LINE BY LINE*/
-int						read_file(char *file_path, t_file_data *data);
-
-/*PROCESS LINE: PARSE A SINGLE LINE AND ROUTE TO APPROPRIATE HANDLER*/
-int						process_line(char *line, t_file_data *data);
-
-/*PROCESS TEXTURES: PARSE TEXTURE CONFIGURATION LINES (NO, SO, WE, EA)*/
-int						process_textures(char *line, t_file_data *data);
-
-/*PROCESS COLORS: PARSE FLOOR AND CEILING COLOR CONFIGURATION LINES*/
-int						process_colors(char *line, t_file_data *data);
-
-/*PROCESS MAP: PARSE MAP LAYOUT LINES AND BUILD GAME MAP*/
-int						process_map(char *line, t_file_data *data);
-
-/*LSTMAP TO CHARMAP: CONVERT LINKED LIST MAP REPRESENTATION TO 2D ARRAY*/
-int						lstmap_to_charmap(t_file_data *data);
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////DATA VALIDATION/////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-/*VALIDATE PLAYER: CHECK THAT EXACTLY ONE PLAYER SPAWN POINT EXISTS*/
-int						validate_player(t_file_data *data);
-
-/*VALIDATE CHARACTERS: VERIFY THAT MAP CONTAINS ONLY VALID CHARACTERS*/
-int						validate_characters(t_file_data *data);
-
-/*VALIDATE BORDERS ONLY: ENSURE ALL MAP BORDERS ARE WALLS*/
-int						validate_borders_only(t_file_data *data);
-
-/*VALIDATE TOP BOTTOM: CHECK THAT TOP AND BOTTOM MAP ROWS ARE SOLID WALLS*/
-int						validate_top_bottom(t_file_data *data);
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////UTILITY FUNCTIONS///////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-/*PARSE RGB: EXTRACT AND VALIDATE RGB COLOR VALUES FROM STRING*/
-int						parse_rgb(char *str, int color[3]);
-
-/*EXTRACT TEXTURE: PARSE AND VALIDATE TEXTURE FILE PATH FROM CONFIGURATION*/
-int						extract_texture(char *path, char **texture);
-
-/*NORTH TEXTURE: PROCESS NO TEXTURE DEFINITION*/
-int						north_texture(t_file_data *data, char *line);
-
-/*SOUTH TEXTURE: PROCESS SO TEXTURE DEFINITION*/
-int						south_texture(t_file_data *data, char *line);
-
-/*WEST TEXTURE: PROCESS WE TEXTURE DEFINITION*/
-int						west_texture(t_file_data *data, char *line);
-
-/*EAST TEXTURE: PROCESS EA TEXTURE DEFINITION*/
-int						east_texture(t_file_data *data, char *line);
-
-/*PROCESS FILE LINES: READ AND PROCESS CONFIGURATION FILE LINE BY LINE*/
-int						process_file_lines(int fd, t_file_data *data);
-
-/*HANDLE EMPTY LINE: PROCESS EMPTY OR WHITESPACE-ONLY LINES*/
-int						handle_empty_line(char *trimmed, t_file_data *data);
-
-/*TRY PROCESS TEXTURES: ATTEMPT TO PARSE TEXTURE CONFIGURATION*/
-int						try_process_textures(char *trimmed, t_file_data *data);
-
-/*TRY PROCESS COLORS: ATTEMPT TO PARSE COLOR CONFIGURATION*/
-int						try_process_colors(char *trimmed, t_file_data *data);
-
-/*TRY PROCESS LINE COMPONENTS: ROUTE LINE TO TEXTURE, COLOR, OR MAP HANDLER*/
-int						try_process_line_components(char *trimmed, char *line,
-							t_file_data *data);
-
-/*CHECK MAP LINE VALID: VALIDATE THAT MAP LINE CONTAINS ONLY VALID CHARACTERS*/
-int						check_map_line_valid(t_file_data *data, char *line);
-
-/*ALLOCATE AND FILL TEMP MAP: CREATE 2D ARRAY FROM LINKED LIST MAP*/
-char					**allocate_and_fill_temp_map(t_file_data *data,
-							int height);
-
-/*RUN VALIDATIONS: EXECUTE ALL MAP VALIDATION FUNCTIONS*/
-int						run_validations(t_file_data *data);
-
-/*CLEANUP ON ERROR: DEALLOCATE TEMPORARY MAP DATA ON FAILURE*/
-void					cleanup_on_error(char **temp_map, int height,
-							t_file_data *data);
+/* PARSE_FILE: READ THE FILE LINE BY LINE AND SEND THE LINE TO PARSE_LINE */
+int						parse_file(t_file_data *data, const char *file);
+/* PARSE_LINE: PARSE A LINE OF THE MAP FILE DEPENDING ON WHAT THE FILE IS */
+int						parse_line(t_file_data *data, char *line);
+/* PARSE_MAP_LINE: PARSE A LINE THAT REPRESENT A PART OF THE MAP */
+int						parse_map_line(t_file_data *data, char *line);
+/* PARSE_COLOR_LINE: PARSE A LINE THAT REPRESENT A COLOR (FLOOR, OR CEILING) */
+int						parse_color_line(t_file_data *data, char *line);
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////MEMORY CLEANUP///////////////////////////////////
