@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/15 17:07:27 by hadia             #+#    #+#             */
-/*   Updated: 2026/04/03 16:51:47 by kporceil         ###   ########lyon.fr   */
+/*   Created: 2025/12/15 17:07:27 by lebroue           #+#    #+#             */
+/*   Updated: 2026/04/06 19:51:43 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int						parse_line(t_file_data *data, char *line);
 int						parse_map_line(t_file_data *data, char *line);
 /* PARSE_COLOR_LINE: PARSE A LINE THAT REPRESENT A COLOR (FLOOR, OR CEILING) */
 int						parse_color_line(t_file_data *data, char *line);
+/* CHECK_MAP: CHECK IF THE MAP IS VALID AND IF ALL THE DATA THAT WE NEED ARE SET */
+int						check_map(t_file_data *data);
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////MEMORY CLEANUP///////////////////////////////////

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kporceil <kporceil@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:38:39 by kporceil          #+#    #+#             */
-/*   Updated: 2026/04/02 16:50:10 by kporceil         ###   ########lyon.fr   */
+/*   Updated: 2026/04/06 19:52:56 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	finalize_map(t_file_data *data)
 	}
 	ft_lstclear(&data->map_lines, free);
 	data->map = map;
-	return (0);
+	return (check_map(data));
 }
 
 int	parse_file(t_file_data *data, const char *file)

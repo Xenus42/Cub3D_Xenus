@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hadia <Hadia@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 15:27:06 by lebroue           #+#    #+#             */
-/*   Updated: 2026/02/23 12:18:55 by hadia            ###   ########.fr       */
+/*   Updated: 2026/04/06 19:46:19 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 		printf("Usage: %s <map_file>\n", argv[0]);
 		return (1);
 	}
-	if (parsing_args(&data, argv) == -1)
+	if (parse_file(&data, argv[1]) == -1)
 	{
 		printf("error\nparsing failed\n");
 		free_file_data(&data);
