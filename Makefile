@@ -16,7 +16,7 @@ BASENAME := $(MAIN) \
 			$(addprefix game/, init_data_game_key) \
 			$(addprefix keyboard/, handle_key handle_key_utils) \
 			$(addprefix minimap/, draw_minimap_bonus) \
-			$(addprefix parsing/, parse_line parse_map_line parse_file free_parsing parse_color) \
+			$(addprefix parsing/, parse_line parse_map_line parse_file check_map free_parsing parse_color) \
 			$(addprefix player/, init_player update_player update_player_utils wall_collision_bonus) \
 			$(addprefix raycasting/, raycasting raycasting_utils_calculate_wall_distance raycasting_utils_dda_algo raycasting_utils_dda_algo_utils_calculate_step raycasting_utils_draw_vertical_line raycasting_utils_draw_vertical_line_utils_render_wall_pixel_column raycasting_utils_draw_vertical_line_utils_wall_texture_fill raycasting_utils_init_ray raycasting_utlils_draw_vertical_line_utils_texture_mapping) \
 			$(addprefix render_3d/, draw_floor_and_ceilling render) \
