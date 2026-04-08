@@ -6,7 +6,7 @@
 /*   By: lcesbron <lcesbron@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:48:55 by kporceil          #+#    #+#             */
-/*   Updated: 2025/11/28 13:35:09 by kporceil         ###   ########lyon.fr   */
+/*   Updated: 2026/04/08 22:42:55 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putdouble_fd(double n, int fd, int precision);
+
+char	*skip_whitespace(char *str);
 
 /*                                                                            */
 /*                                 PART BONUS                                 */

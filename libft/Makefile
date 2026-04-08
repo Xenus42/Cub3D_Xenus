@@ -12,7 +12,8 @@ override DEPDIR := $(addprefix $(BUILDDIR), deps/)
 
 override SRCDIR := srcs/
 
-BASENAME := get_next_line \
+BASENAME := skip_whitespace \
+			get_next_line \
 			get_next_line_utils \
 		   ft_isalpha \
 		   ft_isascii \

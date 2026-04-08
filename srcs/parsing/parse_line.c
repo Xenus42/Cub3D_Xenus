@@ -6,7 +6,7 @@
 /*   By: kporceil <kporceil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:42:35 by kporceil          #+#    #+#             */
-/*   Updated: 2026/04/03 16:44:29 by kporceil         ###   ########lyon.fr   */
+/*   Updated: 2026/04/08 22:42:26 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
-
-static char	*skip_whitespace(char *str)
-{
-	while (ft_isspace(*str))
-		++str;
-	return (str);
-}
 
 static char	*get_path_from_line(char *line)
 {
