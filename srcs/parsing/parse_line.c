@@ -42,13 +42,13 @@ static int	set_texture_path(t_file_data *data, char *line, int dir)
 
 	to_set = NULL;
 	if (dir == NORTH)
-		to_set = &data->north_texture;
+		to_set = &data->north_face_texture;
 	else if (dir == EAST)
-		to_set = &data->east_texture;
+		to_set = &data->east_face_texture;
 	else if (dir == WEST)
-		to_set = &data->west_texture;
+		to_set = &data->west_face_texture;
 	else if (dir == SOUTH)
-		to_set = &data->south_texture;
+		to_set = &data->south_face_texture;
 	else
 		return (-1);
 	if (*to_set)

@@ -79,19 +79,19 @@ void						load_texture_by_face(t_game *game, char *path,
 ///////////////////////////////////////////////////////////////////////////////
 
 /*GET NORTH PTRS: GET AND INITIALIZE TEXTURE DATA POINTERS FOR THE NORTH WALL*/
-void						get_north_ptrs(t_game *game,
+void						get_south_face_ptrs(t_game *game,
 								t_texture_load_buffers *tex);
 
 /*GET SOUTH PTRS: GET AND INITIALIZE TEXTURE DATA POINTERS FOR THE SOUTH WALL*/
-void						get_south_ptrs(t_game *game,
+void						get_north_face_ptrs(t_game *game,
 								t_texture_load_buffers *tex);
 
 /*GET EAST PTRS: GET AND INITIALIZE TEXTURE DATA POINTERS FOR THE EAST WALL*/
-void						get_east_ptrs(t_game *game,
+void						get_west_face_ptrs(t_game *game,
 								t_texture_load_buffers *tex);
 
 /*GET WEST PTRS: GET AND INITIALIZE TEXTURE DATA POINTERS FOR THE WEST WALL*/
-void						get_west_ptrs(t_game *game,
+void						get_east_face_ptrs(t_game *game,
 								t_texture_load_buffers *tex);
 
 /*GET TEXTURE PTRS: DISPATCHER FUNCTION

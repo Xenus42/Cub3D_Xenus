@@ -11,51 +11,52 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <X11/keysym.h>
 
 void	handle_movement_key(int keycode)
 {
-	if (keycode == 119)
+	if (keycode == XK_w)
 		printf("W key pressed - Move forward\n");
-	else if (keycode == 97)
+	else if (keycode == XK_a)
 		printf("A key pressed - Move left\n");
-	else if (keycode == 115)
+	else if (keycode == XK_s)
 		printf("S key pressed - Move backward\n");
-	else if (keycode == 100)
+	else if (keycode == XK_d)
 		printf("D key pressed - Move right\n");
 }
 
 void	handle_arrow_key(int keycode)
 {
-	if (keycode == 65361)
+	if (keycode == XK_Left)
 		printf("Left arrow pressed - Rotate left\n");
-	else if (keycode == 65363)
+	else if (keycode == XK_Right)
 		printf("Right arrow pressed - Rotate right\n");
-	else if (keycode == 65362)
+	else if (keycode == XK_Up)
 		printf("Up arrow pressed\n");
-	else if (keycode == 65364)
+	else if (keycode == XK_Down)
 		printf("Down arrow pressed\n");
 }
 
 void	handle_movement_release(int keycode)
 {
-	if (keycode == 119)
+	if (keycode == XK_w)
 		printf("W key released\n");
-	else if (keycode == 97)
+	else if (keycode == XK_a)
 		printf("A key released\n");
-	else if (keycode == 115)
+	else if (keycode == XK_s)
 		printf("S key released\n");
-	else if (keycode == 100)
+	else if (keycode == XK_d)
 		printf("D key released\n");
 }
 
 void	handle_arrow_release(int keycode)
 {
-	if (keycode == 65361)
+	if (keycode == XK_Left)
 		printf("Left arrow released\n");
-	else if (keycode == 65363)
+	else if (keycode == XK_Right)
 		printf("Right arrow released\n");
-	else if (keycode == 65362)
+	else if (keycode == XK_Up)
 		printf("Up arrow released\n");
-	else if (keycode == 65364)
+	else if (keycode == XK_Down)
 		printf("Down arrow released\n");
 }
