@@ -25,26 +25,33 @@ static char	*get_texture_path(t_file_data *data, char face)
 	return (NULL);
 }
 
-static void	load_all_textures(t_game *game, t_file_data *data)
+static int	load_all_textures(t_game *game, t_file_data *data)
 {
 	char	*path;
 
 	path = get_texture_path(data, 'N');
 	if (path)
-		load_texture_by_face(game, path, 'N');
+		if (load_texture_by_face(game, path, 'N') == -1)
+			return (-1);
 	path = get_texture_path(data, 'S');
 	if (path)
-		load_texture_by_face(game, path, 'S');
+		if (load_texture_by_face(game, path, 'S') == -1)
+			return (-1);
 	path = get_texture_path(data, 'E');
 	if (path)
-		load_texture_by_face(game, path, 'E');
+		if (load_texture_by_face(game, path, 'E') == -1)
+			return (-1);
 	path = get_texture_path(data, 'W');
 	if (path)
-		load_texture_by_face(game, path, 'W');
+		if (load_texture_by_face(game, path, 'W') == -1)
+			return (-1);
+	return (0);
 }
 
-void	load_textures(t_game *game, t_file_data *file_data)
+int	load_textures(t_game *game, t_file_data *file_data)
 {
-	load_all_textures(game, file_data);
+	if (load_all_textures(game, file_data) == -1)
+		return (-1);
 	printf("All textures loaded\n");
+	return (0);
 }

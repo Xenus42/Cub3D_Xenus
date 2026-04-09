@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 15:58:55 by lebroue           #+#    #+#             */
-/*   Updated: 2026/04/01 16:26:04 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/09 17:37:31 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,15 @@ int	ft_open_window(t_file_data *data)
 {
 	t_game	game;
 
+	ft_memset(&game, 0, sizeof(game));
 	init_game(&game, data);
-	if (init_mlx_and_window(&game))
-		return (1);
-	load_textures(&game, data);
+	if (init_mlx_and_window(&game) == -1)
+		return (-1);
+	if (load_textures(&game, data) == -1)
+	{
+		free_game(&game);
+		return (-1);
+	}
 	setup_hooks(&game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

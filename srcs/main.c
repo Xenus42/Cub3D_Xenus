@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	printf("Parsing successful! Opening window...\n");
-	if (ft_open_window(&data) == 1)
+	if (ft_open_window(&data) == -1)
 	{
 		free_file_data(&data);
 		return (1);
