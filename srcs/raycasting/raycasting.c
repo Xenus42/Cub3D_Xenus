@@ -15,20 +15,16 @@
 void	raycasting(t_game *game)
 {
 	int		x;
-	int		w;
-	int		h;
 	t_ray	ray;
 
-	w = 800;
-	h = 600;
 	x = 0;
-	while (x < w)
+	while (x < S_WIDTH)
 	{
-		init_ray(game, &ray, x, w);
+		init_ray(game, &ray, x, S_WIDTH);
 		calculate_step(game, &ray);
 		perform_dda(game, &ray);
 		calculate_wall_distance(game, &ray);
-		draw_wall_vertical_line(game, &ray, x, h);
+		draw_wall_vertical_line(game, &ray, x, S_HEIGHT);
 		x++;
 	}
 }

@@ -19,10 +19,10 @@ void	free_file_data(t_file_data *data)
 
 	if (!data)
 		return ;
-	free(data->north_texture);
-	free(data->south_texture);
-	free(data->west_texture);
-	free(data->east_texture);
+	free(data->north_face_texture);
+	free(data->south_face_texture);
+	free(data->west_face_texture);
+	free(data->east_face_texture);
 	if (data->map)
 	{
 		i = 0;

@@ -31,11 +31,9 @@ void	load_texture_by_face(t_game *game, char *path, char face)
 {
 	t_texture_load_buffers	tex;
 
-	ft_memset(&tex, 0, sizeof(tex));
 	get_texture_ptrs(game, face, &tex);
 	if (!tex.image_ptr)
 		return ;
-	if (load_texture_data(game, path, &tex) == -1)
-		return ;
+	load_texture_data(game, path, &tex);
 	printf("  Loaded %s: %dx%d\n", path, *tex.width_ptr, *tex.height_ptr);
 }

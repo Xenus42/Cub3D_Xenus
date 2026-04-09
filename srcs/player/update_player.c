@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <X11/keysym.h>
 
 void	move_forward_w_or_up_arrow(t_game *game, double move_speed)
 {
 	double	new_x;
 	double	new_y;
 
-	if (game->keys[65362] || game->keys[119])
+	if (game->keys[XK_Up] || game->keys[XK_w])
 	{
 		new_x = game->player_pos_x + game->player_vector_direction_x
 			* move_speed;
@@ -36,7 +37,7 @@ void	move_backward_s_or_down_arrow(t_game *game, double move_speed)
 	double	new_x;
 	double	new_y;
 
-	if (game->keys[65364] || game->keys[115])
+	if (game->keys[XK_Down] || game->keys[XK_s])
 	{
 		new_x = game->player_pos_x - game->player_vector_direction_x
 			* move_speed;
@@ -55,7 +56,7 @@ void	move_left_a_key(t_game *game, double move_speed)
 	double	new_x;
 	double	new_y;
 
-	if (game->keys[97])
+	if (game->keys[XK_a])
 	{
 		new_x = game->player_pos_x - game->camera_plane_x * move_speed;
 		new_y = game->player_pos_y - game->camera_plane_y * move_speed;
@@ -72,7 +73,7 @@ void	move_right_d_key(t_game *game, double move_speed)
 	double	new_x;
 	double	new_y;
 
-	if (game->keys[100])
+	if (game->keys[XK_d])
 	{
 		new_x = game->player_pos_x + game->camera_plane_x * move_speed;
 		new_y = game->player_pos_y + game->camera_plane_y * move_speed;

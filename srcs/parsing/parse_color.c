@@ -12,13 +12,6 @@
 
 #include "parsing.h"
 
-static char	*skip_whitespace(char *str)
-{
-	while (ft_isspace(*str))
-		++str;
-	return (str);
-}
-
 static int	get_rgb_from_line(int *rgb, char *line)
 {
 	char	*start;

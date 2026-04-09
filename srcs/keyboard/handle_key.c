@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <X11/keysym.h>
 
 static void	handle_special_key(int keycode, t_game *game)
 {
-	if (keycode == 65480)
+	if (keycode == XK_F11)
 		printf("F11 key pressed - Maximize\n");
-	else if (keycode == 9 || keycode == 65307)
+	else if (keycode == XK_Escape)
 	{
 		printf("Escape key pressed - Quit\n");
 		close_window(game);

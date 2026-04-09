@@ -14,14 +14,14 @@
 
 static char	*get_texture_path(t_file_data *data, char face)
 {
-	if (face == 'N' && data && data->north_texture)
-		return (data->north_texture);
-	else if (face == 'S' && data && data->south_texture)
-		return (data->south_texture);
-	else if (face == 'E' && data && data->east_texture)
-		return (data->east_texture);
-	else if (face == 'W' && data && data->west_texture)
-		return (data->west_texture);
+	if (face == 'N' && data && data->north_face_texture)
+		return (data->north_face_texture);
+	else if (face == 'S' && data && data->south_face_texture)
+		return (data->south_face_texture);
+	else if (face == 'E' && data && data->east_face_texture)
+		return (data->east_face_texture);
+	else if (face == 'W' && data && data->west_face_texture)
+		return (data->west_face_texture);
 	return (NULL);
 }
 

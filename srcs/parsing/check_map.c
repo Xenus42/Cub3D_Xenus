@@ -66,8 +66,8 @@ int	check_map(t_file_data *data)
 		return (-1);
 	if (data->player_dir == '\0')
 		return (-1);
-	if (!data->south_texture || !data->north_texture
-		|| !data->east_texture || !data->west_texture)
+	if (!data->south_face_texture || !data->north_face_texture
+		|| !data->east_face_texture || !data->west_face_texture)
 		return (-1);
 	if (!data->floor_set || !data->ceiling_set)
 		return (-1);

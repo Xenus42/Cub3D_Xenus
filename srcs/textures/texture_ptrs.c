@@ -12,7 +12,7 @@
 
 #include "../../includes/cub3d.h"
 
-void	get_north_ptrs(t_game *game, t_texture_load_buffers *tex)
+void	get_south_face_ptrs(t_game *game, t_texture_load_buffers *tex)
 {
 	tex->image_ptr = &game->textures.south.image_ptr;
 	tex->buffer_ptr = &game->textures.south.pixel_buffer;
@@ -23,7 +23,7 @@ void	get_north_ptrs(t_game *game, t_texture_load_buffers *tex)
 	tex->endian_ptr = &game->textures.south.byte_order;
 }
 
-void	get_south_ptrs(t_game *game, t_texture_load_buffers *tex)
+void	get_north_face_ptrs(t_game *game, t_texture_load_buffers *tex)
 {
 	tex->image_ptr = &game->textures.north.image_ptr;
 	tex->buffer_ptr = &game->textures.north.pixel_buffer;
@@ -34,7 +34,7 @@ void	get_south_ptrs(t_game *game, t_texture_load_buffers *tex)
 	tex->endian_ptr = &game->textures.north.byte_order;
 }
 
-void	get_east_ptrs(t_game *game, t_texture_load_buffers *tex)
+void	get_west_face_ptrs(t_game *game, t_texture_load_buffers *tex)
 {
 	tex->image_ptr = &game->textures.west.image_ptr;
 	tex->buffer_ptr = &game->textures.west.pixel_buffer;
@@ -45,7 +45,7 @@ void	get_east_ptrs(t_game *game, t_texture_load_buffers *tex)
 	tex->endian_ptr = &game->textures.west.byte_order;
 }
 
-void	get_west_ptrs(t_game *game, t_texture_load_buffers *tex)
+void	get_east_face_ptrs(t_game *game, t_texture_load_buffers *tex)
 {
 	tex->image_ptr = &game->textures.east.image_ptr;
 	tex->buffer_ptr = &game->textures.east.pixel_buffer;
@@ -59,11 +59,11 @@ void	get_west_ptrs(t_game *game, t_texture_load_buffers *tex)
 void	get_texture_ptrs(t_game *game, char face, t_texture_load_buffers *tex)
 {
 	if (face == 'N')
-		get_north_ptrs(game, tex);
+		get_south_face_ptrs(game, tex);
 	else if (face == 'S')
-		get_south_ptrs(game, tex);
+		get_north_face_ptrs(game, tex);
 	else if (face == 'E')
-		get_east_ptrs(game, tex);
+		get_west_face_ptrs(game, tex);
 	else if (face == 'W')
-		get_west_ptrs(game, tex);
+		get_east_face_ptrs(game, tex);
 }

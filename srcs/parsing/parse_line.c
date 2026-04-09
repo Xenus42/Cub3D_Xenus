@@ -6,7 +6,7 @@
 /*   By: kporceil <kporceil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:42:35 by kporceil          #+#    #+#             */
-/*   Updated: 2026/04/03 16:44:29 by kporceil         ###   ########lyon.fr   */
+/*   Updated: 2026/04/08 22:42:26 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
-
-static char	*skip_whitespace(char *str)
-{
-	while (ft_isspace(*str))
-		++str;
-	return (str);
-}
 
 static char	*get_path_from_line(char *line)
 {
@@ -42,13 +35,13 @@ static int	set_texture_path(t_file_data *data, char *line, int dir)
 
 	to_set = NULL;
 	if (dir == NORTH)
-		to_set = &data->north_texture;
+		to_set = &data->north_face_texture;
 	else if (dir == EAST)
-		to_set = &data->east_texture;
+		to_set = &data->east_face_texture;
 	else if (dir == WEST)
-		to_set = &data->west_texture;
+		to_set = &data->west_face_texture;
 	else if (dir == SOUTH)
-		to_set = &data->south_texture;
+		to_set = &data->south_face_texture;
 	else
 		return (-1);
 	if (*to_set)

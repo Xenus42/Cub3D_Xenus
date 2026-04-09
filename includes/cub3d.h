@@ -37,4 +37,8 @@
 # include "../includes/textures.h"
 # include "../includes/window.h"
 
+# define S_WIDTH 800
+# define S_HEIGHT 600
+# define S_HEIGHT_2 300
+# define S_WIDTH_2 400
 #endif

@@ -21,13 +21,13 @@ typedef struct s_game	t_game;
 typedef struct s_file_data
 {
 	// Path to north wall texture
-	char				*north_texture;
+	char				*north_face_texture;
 	// Path to south wall texture
-	char				*south_texture;
+	char				*south_face_texture;
 	// Path to west wall texture
-	char				*west_texture;
+	char				*west_face_texture;
 	// Path to east wall texture
-	char				*east_texture;
+	char				*east_face_texture;
 	// Floor color RGB components [R, G, B]
 	int					floor_color[3];
 	// Ceiling color RGB components [R, G, B]
