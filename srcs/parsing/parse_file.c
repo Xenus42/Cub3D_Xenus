@@ -13,6 +13,7 @@
 #include "get_next_line.h"
 #include "parsing.h"
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 static char	*make_padded_line(char *src, int width)
@@ -72,12 +73,25 @@ static int	finalize_map(t_file_data *data)
 	return (check_map(data));
 }
 
+static bool	is_extension_valid(const char *filename, const char *ext)
+{
+	size_t	fn_len;
+	size_t	ext_len;
+
+	fn_len = ft_strlen(filename);
+	ext_len = ft_strlen(ext);
+	if (fn_len >= ext_len && ft_strncmp(filename + (fn_len - ext_len),
+			ext, ext_len + 1) == 0)
+		return (true);
+	return (false);
+}
+
 int	parse_file(t_file_data *data, const char *file)
 {
 	int		fd;
 	char	*line;
 
-	if (ft_strncmp(file + (ft_strlen(file) - 4), ".cub", 5))
+	if (!is_extension_valid(file, ".cub"))
 		return (-1);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
