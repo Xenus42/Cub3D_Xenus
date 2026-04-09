@@ -12,6 +12,7 @@
 
 #ifndef PLAYER_H
 # define PLAYER_H
+# define PLAYER_RADIUS 0.15
 
 typedef struct s_game		t_game;
 typedef struct s_file_data	t_file_data;
