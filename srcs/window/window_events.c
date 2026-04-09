@@ -15,6 +15,7 @@
 int	close_window(t_game *game)
 {
 	printf("Closing window...\n");
+	free_file_data(game->data);
 	free_game(game);
 	exit(0);
 	return (0);

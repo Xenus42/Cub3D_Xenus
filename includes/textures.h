@@ -67,11 +67,11 @@ typedef struct s_textures
 
 /*LOAD TEXTURE:
 Load all textures from file_data*/
-void						load_textures(t_game *game, t_file_data *data);
+int							load_textures(t_game *game, t_file_data *data);
 
 /*LOAD TEXTURE BY FACE:
 LOAD A SINGLE TEXTURE FILE (.xpm) FOR A SPECIFIC WALL FACE (N/S/E/W)*/
-void						load_texture_by_face(t_game *game, char *path,
+int							load_texture_by_face(t_game *game, char *path,
 								char face);
 
 ///////////////////////////////////////////////////////////////////////////////
