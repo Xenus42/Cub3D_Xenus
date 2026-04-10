@@ -31,7 +31,6 @@ To understand and implement the core rendering technique used in early 3D games,
 
 ```bash
 make              # Compile mandatory part
-make bonus        # Compile with bonus features (minimap)
 make clean        # Remove object files
 make fclean       # Remove object files and executable
 make re           # Recompile from scratch
@@ -58,43 +57,58 @@ Example:
 | **S** / **Down Arrow** | Move backward |
 | **A** | Strafe left |
 | **D** | Strafe right |
-| **Mouse** | Look around (bonus only) |
+| **Left Arrow** | Rotate left |
+| **Right Arrow** | Rotate right |
 | **ESC** | Exit game |
 
 ## Technical Concepts
 
 ### 1. Parsing the Configuration File (.cub)
 
-The parsing phase loads and validates the game configuration from a `.cub` file. This process has three main stages:
+The parsing phase loads and validates the game configuration from a `.cub` file through a robust three-phase process:
 
-**Phase 1: Metadata Extraction and Validation**
+**Phase 1: Line Parsing and Metadata Extraction**
 
-- **Textures (NO/SO/WE/EA)**: Each line specifies a wall texture for a direction
-  - Extracted as file paths and loaded into memory
-  - Each texture must be defined exactly once
+- **Textures (NO/SO/WE/EA)**: Wall texture paths for each cardinal direction
+  - `NO ./path/to/north.xpm` - North wall texture
+  - `SO ./path/to/south.xpm` - South wall texture  
+  - `WE ./path/to/west.xpm` - West wall texture
+  - `EA ./path/to/east.xpm` - East wall texture
+  - Each direction must have exactly one texture defined
   
-- **Colors (F/C)**: Floor and ceiling colors in RGB format
-  - Format: `F 255,100,50` or `C 0,0,0`
-  - Each component must be an integer between 0-255
-  - Each color must be defined exactly once
+- **Colors (F/C)**: Floor and ceiling RGB colors
+  - `F 220,100,0` - Floor color (RGB values 0-255)
+  - `C 25,25,25` - Ceiling color (RGB values 0-255)
+  - Validation ensures each component is a valid integer between 0-255
+  - Each color (floor and ceiling) must be defined exactly once
 
-**Phase 2: Map Accumulation**
+**Phase 2: Map Data Accumulation**
 
-- Lines not matching texture or color formats are treated as map data
-- Each map line is stored in a temporary linked list
-- Empty lines before the first map line are ignored
-- Valid map characters: `0` (empty space), `1` (wall), `N/S/E/W` (player position)
+- All lines not matching texture or color patterns are accumulated as map data
+- Individual map lines are stored in a linked list for flexible processing
+- Empty lines before the first map line are skipped
+- Empty lines within or after the map contribute to map structure
 
-**Phase 3: Map Conversion and Validation**
+**Phase 3: Map Validation and Structure Building**
 
-The linked list is converted into a 2D character array with four mandatory validations:
+The accumulated map lines are consolidated into a 2D character array with four critical validations:
 
-1. **Width Uniformity**: All rows must have the same width (padding with spaces if needed)
-2. **Unique Player Position**: Exactly one player spawn point (N, S, E, or W)
-3. **Spatial Closure** (Flood-fill):
-   - From the player position, verify all reachable spaces are completely surrounded by walls
-   - Detects map gaps and unreachable areas
-4. **Player Edge Check**: Player cannot spawn on map boundaries
+1. **Width Normalization**: All rows are padded to equal width for consistent indexing
+2. **Unique Spawn Point**: Exactly one player position (N, S, E, or W) must exist
+   - N = Player facing North
+   - S = Player facing South
+   - E = Player facing East
+   - W = Player facing West
+3. **Spatial Closure Verification** (Flood-fill algorithm):
+   - Starts from player position and reaches all accessible non-wall spaces
+   - Confirms all reachable areas are enclosed by walls (no map edges or holes)
+   - Prevents players from leaving the map boundaries
+4. **Spawn Position Safety**: Player cannot begin on map boundaries
+
+**Valid Map Characters:**
+- `0` = Empty walkable space
+- `1` = Solid wall
+- `N/S/E/W` = Player spawn point and initial direction
 
 ### 2. DDA Algorithm (Digital Differential Analyzer)
 
@@ -133,30 +147,42 @@ Without correction, rays at screen edges would be longer, causing the image to b
 
 ## Architecture
 
-The project is organized into modular components respecting the 42 Norminette constraints (max 5 functions per file, max 25 lines per function):
+The project is organized into modular components respecting the 42 Norminette constraints (max 5 functions per file, max 25 lines per function). Each module handles a specific responsibility:
 
 ### Core Modules
 
-| Module | Purpose |
-|--------|---------|
-| **raycasting/** | 3D rendering engine (DDA, raycasting, wall rendering) |
-| **parsing/** | Configuration file parsing and validation |
-| **textures/** | Texture loading and management |
-| **render_3d/** | Floor and ceiling rendering |
-| **player/** | Player position and collision handling |
-| **keyboard/** | User input handling |
-| **window/** | Window creation and display management |
-| **game/** | Main game context and loop |
-| **minimap/** | Minimap display (bonus) |
+| Module | Purpose | Key Files |
+|--------|---------|-----------|
+| **raycasting/** | 3D rendering engine using DDA and raycasting | `raycasting.c`, `dda_algo.c`, `draw_vertical_line.c` |
+| **parsing/** | Configuration file parsing and validation | `parse_file.c`, `check_map.c`, `parse_color.c` |
+| **textures/** | Texture loading and pixel access management | `charge_textures.c`, `texture_loader.c` |
+| **render_3d/** | Floor and ceiling rendering | `render.c`, `draw_floor_and_ceilling.c` |
+| **player/** | Player position, direction, and collision handling | `update_player.c`, `wall_collision_bonus.c` |
+| **keyboard/** | Keyboard input event handling | `handle_key.c` |
+| **window/** | Window creation and event management | `open_window.c`, `window_events.c` |
+| **game/** | Main game state initialization and loop | `init_data_game_key.c` |
+| **minimap/** | Optional minimap rendering | `draw_minimap_bonus.c` |
 
-### Key Raycasting Files
+### Module Details
 
-- `raycasting.c`: Main orchestrator (loops through 800 rays)
-- `raycasting_utils_init_ray.c`: Ray initialization
-- `raycasting_utils_dda_algo_utils_calculate_step.c`: DDA step calculations
-- `raycasting_utils_dda_algo.c`: DDA grid traversal
-- `raycasting_utils_calculate_wall_distance.c`: Perpendicular distance calculation
-- `raycasting_utils_draw_vertical_line.c`: Screen column rendering
+**Keyboard Module (`keyboard/`)**
+- Single handler `handle_key.c` processes KeyPress and KeyRelease events
+- Updates global key array in game state
+- Direct Escape key handling for window close
+- Simplified design without helper functions for cleaner code
+
+**Window Module (`window/`)**
+- `open_window.c`: Initializes MLX window, image buffer, and hooks
+- `window_events.c`: Manages core window events (close only)
+- Minimalist approach focusing on essential window management
+
+**Raycasting Module (`raycasting/`)**
+- `raycasting.c`: Main orchestrator - loops through 800 rays
+- `init_ray.c`: Ray initialization based on camera angle
+- `calculate_step.c`: DDA step calculations
+- `dda_algo.c`: Grid traversal algorithm
+- `calculate_wall_distance.c`: Perpendicular distance computation
+- `draw_vertical_line.c`: Screen column rendering with textures
 
 ## Resources
 
@@ -185,13 +211,11 @@ The project is organized into modular components respecting the 42 Norminette co
 
 ### AI Usage
 
-AI was used for code review and documentation purposes only:
-- **Code structure review**: Validating function organization against 42 Norminette
-- **Function naming clarity**: Ensuring descriptive names that explain purpose (e.g., `raycasting_utils_dda_algo_utils_calculate_step.c`)
-- **README documentation**: Structuring technical explanations for clarity
-- **Parsing logic explanation**: Documenting the three-phase parsing process
-
-No AI was used for core algorithm design or implementation logic.
+AI was used for learning and documentation purposes:
+- **Raycasting and DDA concepts**: Understanding and explaining raycasting rendering technique and the DDA algorithm with reference to educational tutorials and articles
+- **Function naming clarity**: Ensuring descriptive names that communicate purpose clearly
+- **README documentation**: Structuring technical explanations for clarity and coherence
+- **Parsing logic explanation**: Documenting the three-phase parsing process and validation steps
 
 ## Compilation Status
 
