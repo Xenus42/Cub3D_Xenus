@@ -38,21 +38,5 @@ void					put_pixel(t_game *game, int x, int y, int color);
 /*RGB TO INT: CONVERT RGB COLOR COMPONENTS TO 32-BIT INTEGER FORMAT*/
 int						rgb_to_int(int r, int g, int b);
 
-///////////////////////////////////////////////////////////////////////////////
-////////////////////////////MINIMAP RENDERING//////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-/*GET MINIMAP COLOR: DETERMINE COLOR FOR A MAP TILE BASED ON ITS CHARACTER*/
-int						get_minimap_color(char tile);
-
-/*DRAW MINIMAP CASE: DRAW A SINGLE SQUARE OF THE MINIMAP*/
-void					draw_minimap_case(t_game *game, t_pixel_square pixel);
-
-/*DRAW MINIMAP LINE: DRAW ONE ROW OF MINIMAP SQUARES*/
-void					draw_minimap_line(t_game *game, int y, int square_size);
-
-/*DRAW PLAYER RED MINIMAP: DRAW PLAYER POSITION AS RED CIRCLE ON MINIMAP*/
-void					draw_player_red_minimap(t_game *game,
-							int map_scale_for_pixel);
 
 #endif
