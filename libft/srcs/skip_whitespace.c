@@ -18,4 +18,3 @@ char	*skip_whitespace(char *str)
 		++str;
 	return (str);
 }
-

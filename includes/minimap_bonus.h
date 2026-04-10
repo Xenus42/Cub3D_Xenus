@@ -37,5 +37,4 @@ typedef struct s_game	t_game;
 /*DRAW MINIMAP: RENDER A PLAYER-CENTERED MINIMAP OF FIXED SCREEN SIZE*/
 void					draw_minimap(t_game *game);
 
-
 #endif

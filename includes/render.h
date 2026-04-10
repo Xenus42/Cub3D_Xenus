@@ -38,5 +38,4 @@ void					put_pixel(t_game *game, int x, int y, int color);
 /*RGB TO INT: CONVERT RGB COLOR COMPONENTS TO 32-BIT INTEGER FORMAT*/
 int						rgb_to_int(int r, int g, int b);
 
-
 #endif
