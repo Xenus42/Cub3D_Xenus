@@ -14,7 +14,7 @@ MAIN := main
 
 BASENAME := $(MAIN) \
 			$(addprefix game/, init_data_game_key) \
-			$(addprefix keyboard/, handle_key handle_key_utils) \
+			$(addprefix keyboard/, handle_key) \
 			$(addprefix minimap/, draw_minimap_bonus) \
 			$(addprefix parsing/, parse_line parse_map_line parse_file check_map free_parsing parse_color) \
 			$(addprefix player/, init_player update_player update_player_utils wall_collision_bonus) \

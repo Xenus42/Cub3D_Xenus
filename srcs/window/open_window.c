@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 15:58:55 by lebroue           #+#    #+#             */
-/*   Updated: 2026/04/09 17:37:31 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/09 18:23:21 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,23 @@ int	init_mlx_and_window(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
-		return (printf("Failed to initialize MLX\n"), -1);
+	{
+		printf("Failed to initialize MLX\n");
+		return (-1);
+	}
 	game->mlx_window_ptr = mlx_new_window(game->mlx_ptr, S_WIDTH, S_HEIGHT,
 			"Cub3D");
 	if (!game->mlx_window_ptr)
-		return (printf("Failed to create window\n"), -1);
+	{
+		printf("Failed to create window\n");
+		return (-1);
+	}
 	game->mlx_image_ptr = mlx_new_image(game->mlx_ptr, S_WIDTH, S_HEIGHT);
 	if (!game->mlx_image_ptr)
-		return (printf("Failed to create image\n"), -1);
+	{
+		printf("Failed to create image\n");
+		return (-1);
+	}
 	game->pixel_buffer = mlx_get_data_addr(game->mlx_image_ptr,
 			&game->bits_for_one_pixel, &game->bytes_per_scanline,
 			&game->byte_order);
