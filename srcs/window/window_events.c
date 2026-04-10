@@ -20,17 +20,3 @@ int	close_window(t_game *game)
 	exit(0);
 	return (0);
 }
-
-int	minimize_window(void *param)
-{
-	(void)param;
-	printf("Window minimized\n");
-	return (0);
-}
-
-int	maximize_window(void *param)
-{
-	(void)param;
-	printf("Window maximized\n");
-	return (0);
-}
