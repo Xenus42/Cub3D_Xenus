@@ -60,9 +60,11 @@ int						parse_file(t_file_data *data, const char *file);
 int						parse_line(t_file_data *data, char *line);
 /* PARSE_MAP_LINE: PARSE A LINE THAT REPRESENT A PART OF THE MAP */
 int						parse_map_line(t_file_data *data, char *line);
-/* PARSE_COLOR_LINE: PARSE A LINE THAT REPRESENT A COLOR (FLOOR, OR CEILING) */
+/* PARSE_COLOR_LINE: PARSE A LINE THAT REPRESENT A COLOR
+ * (FLOOR, OR CEILING) */
 int						parse_color_line(t_file_data *data, char *line);
-/* CHECK_MAP: CHECK IF THE MAP IS VALID AND IF ALL THE DATA THAT WE NEED ARE SET */
+/* CHECK_MAP: CHECK IF THE MAP IS VALID AND IF ALL THE DATA 
+ * THAT WE NEED ARE SET */
 int						check_map(t_file_data *data);
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -6,95 +6,119 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 15:48:42 by lebroue           #+#    #+#             */
-/*   Updated: 2026/03/14 14:46:26 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:21:24 by kporceil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#include <math.h>
 
-int	get_minimap_color(char tile)
+static int	get_rotated_cell_color(t_game *game, int dx, int dy, int cell_size)
 {
-	if (tile == '1')
-		return (0xFFFFFF);
-	return (0x000000);
+	double	u;
+	double	v;
+	int		map_x;
+	int		map_y;
+
+	u = (double)dx / cell_size;
+	v = -(double)dy / cell_size;
+	map_x = (int)floor(game->player_pos_x
+			- u * game->player_vector_direction_y
+			+ v * game->player_vector_direction_x);
+	map_y = (int)floor(game->player_pos_y
+			+ u * game->player_vector_direction_x
+			+ v * game->player_vector_direction_y);
+	if (map_x < 0 || map_y < 0 || map_x >= game->data->map_width
+		|| map_y >= game->data->map_height)
+		return (MINIMAP_COLOR_VOID);
+	if (map_x >= (int)ft_strlen(game->data->map[map_y]))
+		return (MINIMAP_COLOR_VOID);
+	if (game->data->map[map_y][map_x] == '1')
+		return (MINIMAP_COLOR_WALL);
+	return (MINIMAP_COLOR_FLOOR);
 }
 
-void	draw_minimap_case(t_game *game, t_pixel_square d)
+static int	blend_fov(int color)
 {
-	int	position_x;
-	int	position_y;
+	int	r;
+	int	g;
+	int	b;
 
-	position_y = 0;
-	while (position_y < d.square_size)
+	r = ((color >> 16) & 0xFF) + 60;
+	g = ((color >> 8) & 0xFF) + 50;
+	b = (color & 0xFF) + 15;
+	if (r > 255)
+		r = 255;
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
+	return ((r << 16) | (g << 8) | b);
+}
+
+static int	get_pixel_color(t_game *game, int dx, int dy, int cell_size)
+{
+	int		color;
+	double	cam_sq;
+
+	color = get_rotated_cell_color(game, dx, dy, cell_size);
+	cam_sq = game->camera_plane_x * game->camera_plane_x
+		+ game->camera_plane_y * game->camera_plane_y;
+	if (dy < 0 && cam_sq * (double)(dy * dy) >= (double)(dx * dx))
+		return (blend_fov(color));
+	return (color);
+}
+
+static void	draw_minimap_circle(t_game *game, int cx, int cy, int radius)
+{
+	int		dx;
+	int		dy;
+	int		cell_size;
+	int		dist_sq;
+
+	cell_size = radius / MINIMAP_RANGE;
+	dy = -radius;
+	while (dy <= radius)
 	{
-		position_x = 0;
-		while (position_x < d.square_size)
+		dx = -radius;
+		while (dx <= radius)
 		{
-			put_pixel(game, d.screen_start_x * d.square_size + position_x,
-				d.screen_start_y * d.square_size + position_y, d.color);
-			position_x++;
+			dist_sq = dx * dx + dy * dy;
+			if (dist_sq <= radius * radius)
+			{
+				if (dist_sq >= (radius - 2) * (radius - 2))
+					put_pixel(game, cx + dx, cy + dy, MINIMAP_COLOR_BORDER);
+				else
+					put_pixel(game, cx + dx, cy + dy,
+						get_pixel_color(game, dx, dy, cell_size));
+			}
+			dx++;
 		}
-		position_y++;
+		dy++;
 	}
 }
 
-void	draw_minimap_line(t_game *game, int y, int square_size)
+void	draw_minimap(t_game *game)
 {
-	int				x;
-	int				line_len;
-	t_pixel_square	d;
-
-	line_len = ft_strlen(game->data->map[y]);
-	x = 0;
-	while (x < game->data->map_width)
-	{
-		if (x >= line_len)
-			x++;
-		else
-		{
-			d.screen_start_x = x;
-			d.screen_start_y = y;
-			d.square_size = square_size;
-			d.color = get_minimap_color(game->data->map[y][x]);
-			draw_minimap_case(game, d);
-			x++;
-		}
-	}
-}
-
-void	draw_player_red_minimap(t_game *game, int map_scale_for_pixel)
-{
-	int	player_px;
-	int	player_py;
+	int	radius;
+	int	cx;
+	int	cy;
 	int	i;
 	int	j;
 
-	player_px = (int)(game->player_pos_x * map_scale_for_pixel);
-	player_py = (int)(game->player_pos_y * map_scale_for_pixel);
+	radius = MINIMAP_SIZE / 2;
+	cx = MINIMAP_OFFSET_X + radius;
+	cy = MINIMAP_OFFSET_Y + radius;
+	draw_minimap_circle(game, cx, cy, radius);
 	i = -2;
 	while (i <= 2)
 	{
 		j = -2;
 		while (j <= 2)
 		{
-			put_pixel(game, player_px + i, player_py + j, 0xFF0000);
+			put_pixel(game, cx + i, cy + j, MINIMAP_COLOR_PLAYER);
 			j++;
 		}
 		i++;
 	}
-}
-
-void	draw_minimap(t_game *game)
-{
-	int	y;
-	int	square_size;
-
-	square_size = 10;
-	y = 0;
-	while (y < game->data->map_height)
-	{
-		draw_minimap_line(game, y, square_size);
-		y++;
-	}
-	draw_player_red_minimap(game, square_size);
 }

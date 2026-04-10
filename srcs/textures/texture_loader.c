@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 23:15:00 by lebroue           #+#    #+#             */
-/*   Updated: 2026/04/07 12:28:28 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/09 17:37:38 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ static int	load_texture_data(t_game *game, char *path,
 	return (0);
 }
 
-void	load_texture_by_face(t_game *game, char *path, char face)
+int	load_texture_by_face(t_game *game, char *path, char face)
 {
 	t_texture_load_buffers	tex;
 
+	ft_memset(&tex, 0, sizeof(tex));
 	get_texture_ptrs(game, face, &tex);
 	if (!tex.image_ptr)
-		return ;
-	load_texture_data(game, path, &tex);
+		return (-1);
+	if (load_texture_data(game, path, &tex) == -1)
+		return (-1);
 	printf("  Loaded %s: %dx%d\n", path, *tex.width_ptr, *tex.height_ptr);
+	return (0);
 }
