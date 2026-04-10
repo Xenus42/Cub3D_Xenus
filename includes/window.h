@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 13:22:32 by lebroue           #+#    #+#             */
-/*   Updated: 2026/02/26 21:03:50 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:09:54 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,5 @@ void						setup_hooks(t_game *game);
 
 /*CLOSE WINDOW: HANDLE WINDOW CLOSE EVENT AND CLEANUP RESOURCES*/
 int							close_window(t_game *game);
-
-/*MINIMIZE WINDOW: HANDLE WINDOW MINIMIZE EVENT*/
-int							minimize_window(void *param);
-
-/*MAXIMIZE WINDOW: HANDLE WINDOW MAXIMIZE EVENT*/
-int							maximize_window(void *param);
 
 #endif

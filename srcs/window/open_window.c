@@ -6,7 +6,7 @@
 /*   By: lebroue <lebroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 15:58:55 by lebroue           #+#    #+#             */
-/*   Updated: 2026/04/09 18:23:21 by lebroue          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:09:54 by lebroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,6 @@ void	setup_hooks(t_game *game)
 		game);
 	mlx_hook(game->mlx_window_ptr, DestroyNotify, NoEventMask, close_window,
 		game);
-	mlx_hook(game->mlx_window_ptr, VisibilityNotify, VisibilityChangeMask,
-		minimize_window, NULL);
-	mlx_hook(game->mlx_window_ptr, ConfigureNotify, ResizeRedirectMask,
-		maximize_window, NULL);
 	mlx_loop_hook(game->mlx_ptr, (int (*)(void *))render, game);
 }
 
