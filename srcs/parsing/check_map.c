@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <stdio.h>
 
 static bool	is_valid_map_char(char c)
 {
@@ -62,6 +63,11 @@ int	check_map(t_file_data *data)
 {
 	if (data->map_height == 0 || data->map_width == 0)
 		return (-1);
+	if (data->map_height > 200 || data->map_width > 200)
+	{
+		printf("Map is too big\n");
+		return (-1);
+	}
 	if (validate_map_chars(data) == -1)
 		return (-1);
 	if (data->player_dir == '\0')
