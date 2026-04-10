@@ -12,7 +12,7 @@
 - **DDA Algorithm**: Efficient grid traversal to detect wall collisions
 - **Player Movement**: 4-directional movement (forward, backward, strafe left/right)
 - **Collision Detection**: Prevents walking through walls
-- **Bonus Features**: Minimap (when compiled with `make bonus`)
+- **Bonus Features**: Minimap (when compiled with `make')
 
 ### Project Goal
 To understand and implement the core rendering technique used in early 3D games, implementing a complete raycasting pipeline: parsing configuration files, managing textures, calculating ray-wall intersections, and rendering columns based on distance.
