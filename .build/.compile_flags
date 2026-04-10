@@ -1,1 +1,0 @@
-defaultMANDATORYcc-Wall -Wextra -Werror -Wunreachable-code-Iincludes -Ilibft/includes -Iminilibx-linux/-lmlx -lXext -lX11 -lft -lm-L libft/ -L minilibx-linux/
