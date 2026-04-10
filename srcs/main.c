@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	}
 	if (parse_file(&data, argv[1]) == -1)
 	{
-		printf("error\nparsing failed\n");
+		printf("Error\nparsing failed\n");
 		free_file_data(&data);
 		return (1);
 	}

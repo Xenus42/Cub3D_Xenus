@@ -19,7 +19,7 @@ static int	load_texture_data(t_game *game, char *path,
 			tex->height_ptr);
 	if (!*tex->image_ptr)
 	{
-		fprintf(stderr, "Error loading texture: %s\n", path);
+		printf("Error\nloading texture: %s\n", path);
 		return (-1);
 	}
 	*tex->buffer_ptr = mlx_get_data_addr(*tex->image_ptr, tex->bpp_ptr,

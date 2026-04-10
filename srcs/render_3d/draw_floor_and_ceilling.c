@@ -23,7 +23,7 @@ void	put_pixel(t_game *game, int x, int y, int color)
 
 	if (!game || !game->pixel_buffer)
 	{
-		printf("Error: pixel_buffer not initialized!\n");
+		printf("Error\npixel_buffer not initialized!\n");
 		return ;
 	}
 	if (x < 0 || x >= S_WIDTH || y < 0 || y >= S_HEIGHT)
