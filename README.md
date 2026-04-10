@@ -1,6 +1,6 @@
 # Cub3D
 
-*This project has been created as part of the 42 curriculum by hadia, lebroue.*
+*This project has been created as part of the 42 curriculum by kporceil, lebroue.*
 
 ## Description
 
